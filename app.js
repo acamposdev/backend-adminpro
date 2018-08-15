@@ -23,7 +23,7 @@ let uploadRoutes = require('./routes/upload');
 let imagesRoutes = require('./routes/images');
 
 // Conexion a la base de datos
-mongoose.connection.openUri('mongodb://localhost:27017/HospitalDB', (err, response) => {
+mongoose.connect('mongodb://localhost:27017/HospitalDB', { useNewUrlParser: true }, (err, response) => {
     if (err) {
         throw err;
     } else {

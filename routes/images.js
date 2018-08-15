@@ -15,10 +15,10 @@ app.get('/:entity/:img', (req, res, next) => {
     let pathImg = path.resolve(__dirname , `../uploads/${entity}/${img}`);
 
     if (fs.existsSync(pathImg)) {
-        res.sendfile(pathImg);
+        res.sendFile(pathImg);
     } else {
         let pathNoImg = path.resolve(__dirname, '../assets/no-img.jpg');
-        res.sendfile(pathNoImg);
+        res.sendFile(pathNoImg);
     }
 
 });

@@ -30,7 +30,7 @@ app.get('/', (req, res, next) => {
                     })
                 } 
 
-                Hospital.count({}, (err, count) => {
+                Hospital.countDocuments({}, (err, count) => {
                     return res.status(200).json({
                         ok: true,
                         hospitals: result,
