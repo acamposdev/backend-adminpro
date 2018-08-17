@@ -6,6 +6,13 @@ let bodyParser = require('body-parser')
 // Inicializamos variables
 var app = express(); // Definicion del servidor express
 
+// CORS
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow_Methods", "POST", "PUT", "GET", "DELETE", "OPTIONS");
+    next();
+});
 
 // Body parser config
 app.use(bodyParser.urlencoded( { extended: false }));

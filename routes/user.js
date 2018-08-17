@@ -43,7 +43,7 @@ app.get('/', (req, res, next) => {
 /**
  * Ruta para crear usuarios
  */
-app.post('/', auth.verifyToken, (req, res) => {
+app.post('/', (req, res) => {
     const body = req.body;
     
     var user = new User({

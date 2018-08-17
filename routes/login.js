@@ -139,6 +139,8 @@ app.post('/google', async (req, res) => {
                 // Crear token de autenticacion
                 let token = jwt.sign({ user: user }, SEED, { expiresIn: 14400 }); // 4 horas
 
+                console.log('userSaved ' , userSaved)
+
                 res.status(200).json({
                     ok: true,
                     user: userSaved,
