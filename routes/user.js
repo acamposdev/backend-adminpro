@@ -16,7 +16,7 @@ app.get('/', (req, res, next) => {
     let offset = req.query.offset || 0;
     offset = Number(offset);
 
-    User.find({ }, 'name email img role')
+    User.find({ }, 'name email img role google')
         .skip(offset)
         .limit(5)
         .exec(
@@ -75,7 +75,7 @@ app.post('/', (req, res) => {
 /**
  * Actualizar usuarios
  */
-app.put('/:userId', auth.verifyToken, (req, res) => {
+app.put('/:userId', [auth.verifyToken, auth.verifyUser ], (req, res) => {
     const userId = req.params.userId;
     const body = req.body;
 
@@ -125,7 +125,7 @@ app.put('/:userId', auth.verifyToken, (req, res) => {
 /**
  * Metodo para eliminar usuario por id
  */
-app.delete('/:userId', auth.verifyToken, (req, res) => {
+app.delete('/:userId', [ auth.verifyToken, auth.verifyUser ], (req, res) => {
     const userId = req.params.userId;
 
     User.findByIdAndRemove(userId, (err, userRemoved) => {

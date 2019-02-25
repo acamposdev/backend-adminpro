@@ -110,7 +110,7 @@ function searchDoctor(param, regExp) {
 function searchUsers(param, regExp) {
 
     return new Promise((resolve, reject) => {
-        User.find({}, 'name email role')
+        User.find({}, 'name email role, img')
             .or([
                 { 'name': regExp },
                 { 'email': regExp }

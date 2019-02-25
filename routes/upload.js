@@ -134,7 +134,7 @@ function uploadByType(entity, id, fileName, res) {
             let oldPath = './uploads/doctors/' + doctor.img;
 
             // Si existe se elimina
-            if (fs.existsSync(oldPath)) {
+            if (doctor.img.length > 0 && fs.existsSync(oldPath)) {
                 fs.unlink(oldPath);
             }
 

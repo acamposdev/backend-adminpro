@@ -13,6 +13,21 @@ const client = new OAuth2Client(CLIENT_ID);
 // Model de mongoDB
 let User = require('../models/user');
 
+let auth = require('../middlewares/auth');
+
+/**
+ * Actualizacion del token
+ */
+app.get('/tokenrenoval', auth.verifyToken, (req, res) => {
+    // Renovacion de token
+    let token = jwt.sign({ user: req.user }, SEED, { expiresIn: 14400 }); // 4 horas
+
+    res.status(200).json({
+        ok: true,
+        token: token
+    });
+});
+
 // Autenticacaion de Google
 async function verify(token) {
     const ticket = await client.verifyIdToken({
@@ -78,7 +93,8 @@ app.post('/', (req, res) => {
             ok: true,
             user: user,
             token: token,
-            id: user.id
+            id: user.id,
+            menu: getMenu(user.role)
         });
     });
 });
@@ -122,7 +138,8 @@ app.post('/google', async (req, res) => {
                     ok: true,
                     user: user,
                     token: token,
-                    id: user.id
+                    id: user.id,
+                    menu: getMenu(user.role)
                 });
             }
         } else {
@@ -145,11 +162,47 @@ app.post('/google', async (req, res) => {
                     ok: true,
                     user: userSaved,
                     token: token,
-                    id: userSaved.id
+                    id: userSaved.id,
+                    menu: getMenu(userSaved.role)
                 });
             });
         }
     });
 })
+
+function getMenu(role) {
+    let menu = [
+        {
+            titulo: 'Principal',
+            icono: 'mdi mdi-gauge',
+            submenu: [
+                { titulo: 'Dashboard', url: '/dashboard' },
+                { titulo: 'ProgressBar', url: '/progress' },
+                { titulo: 'Graficas', url: '/graficas1' },
+                { titulo: 'Promesas', url: '/promesas' },
+                { titulo: 'RxJS', url: '/rxjs' },
+            ]
+        },
+        {
+            titulo: 'Administracion',
+            icono: 'mdi mdi-folder-lock-open',
+            submenu: [
+                // { titulo: 'Usuarios', url: '/users' },
+                { titulo: 'Hospitales', url: '/hospitals' },
+                { titulo: 'Medicos', url: '/doctors' },
+                { titulo: 'Ajustes', url: '/settings' }
+            ]
+        }
+    ];
+
+    // console.log(role);
+
+    if (role === 'ADMIN_ROLE') {
+        menu[1].submenu.unshift({ titulo: 'Usuarios', url: '/users' });
+    }
+
+    // console.log(menu);
+    return menu;
+}
 
 module.exports = app;

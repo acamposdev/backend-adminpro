@@ -28,3 +28,21 @@ exports.verifyToken = (req, res, next) => {
         
     });
 }
+
+/**
+ * Verificar Admin o mismo usuario
+ */
+exports.verifyUser = (req, res, next) => {
+    const id = req.params.userId;
+
+    if (req.user.role === 'ADMIN_ROLE' || req.user._id === id) {
+        next();
+        return;
+    } else {
+        return res.status(401).json({
+            ok: false,
+            message: 'Token incorrecto',
+            errors: { message: 'Token incorrecto - Se necesita rol administrador' }
+        });
+    }
+}
